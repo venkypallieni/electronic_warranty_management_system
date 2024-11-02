@@ -1,0 +1,71 @@
+{% extends 'customer/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="main-content">
+    <h2>Welcome, {{ user.username }}</h2>
+
+    <div class="cards">
+        <div class="card">
+            <h3>Total Products</h3>
+            <p>{{total_products}}</p>
+        </div>
+        <div class="card">
+            <h3>Total Warranties</h3>
+            <p>{{total_warranties}}</p>
+        </div>
+        <div class="card">
+            <h3>Approved Claims</h3>
+            <p>{{total_claims}}</p>
+        </div>
+    </div>
+
+    <div class="recent-warranties">
+        <h3>Recent Claims</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Claim Date</th>
+                    <th>Claim Amount</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for claim in recent_claims %}
+                    <tr>
+                        <td>{{claim.product}}</td>
+                        <td>{{claim.date_of_claim}}</td>
+                        <td>{{claim.amount_claimed}}</td>
+                        <td>{{claim.status}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="recent-warranties">
+        <h3>Active Warranties</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Warranty Period Months</th>
+                    <th>expiration_date</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for warranty in active_warranties %}
+                    <tr>
+                        <td>{{warranty.product}}</td>
+                        <td>{{warranty.warranty_period_months}}</td>
+                        <td>{{warranty.expiration_date}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endblock %}

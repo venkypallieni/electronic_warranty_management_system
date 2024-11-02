@@ -1,0 +1,190 @@
+{%  extends 'customer/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}Claims{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+}
+
+.products-container {
+    max-width: 800px;
+    margin: 5% auto;
+    padding: 20px;
+    background-color: #FFF;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+h2, h3 {
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.products-list {
+    margin-bottom: 20px;
+}
+
+.product-card {
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #FFF;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.pagination a {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.pagination span {
+    margin: 0 5px;
+    color: var(--secondary-color);
+}
+
+.add-product-form {
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: var(--button-primary-color);
+    color: #FFF;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: darken(var(--button-primary-color), 10%);
+}
+
+
+
+
+    </style>
+</head>
+<body>
+    {% block content %}
+    
+    <div class="products-container">
+        <!-- Form to Add New Product -->
+        <div class="add-product-form">
+            <h3>Add New Claim</h3>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="product">Product</label>
+                    {% render_field form.product class="form-control" placeholder="Enter product name" %}
+                </div>
+
+                <div class="form-group">
+                    <label for="issue_description">Issue Description</label>
+                    {% render_field form.issue_description class="form-control" placeholder="Enter issue description" %}
+                </div>
+                <!-- Documents -->
+                <div class="form-group">
+                    <label for="documents">Repair Document</label>
+                    {% render_field form.repair_document class="form-control" placeholder="upload repair document" %}
+                    {% if form.repair_document.errors %}
+                    <div class="error">{{ form.repair_document.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    {% render_field form.description class="form-control" rows="4" placeholder="Product description (optional)" %}
+                </div>
+
+                <button type="submit" class="btn btn-danger ">Add Claim</button>
+            </form>
+        </div>
+    </div>
+    <h2>My Claims</h2>
+        
+    <!-- Existing Products with Pagination -->
+    <div class="products-list">
+        <table class="table table-hover">
+            <tr scope="">
+                <th scope="col">Product</th>
+                <th scope="col">Issue Description</th>
+                <th scope="col">Claim Date</th>
+                <th scope="col">Status</th>
+                <th scope="col">Resolution Description</th>
+                <th scope="col">Repair Document</th>
+                <th scope="col">Action</th>
+            </tr>
+            <tbody>
+        {% for claim in page_obj %}
+                    <tr scope="row">
+                        <td  scope="col">{{ claim.product }}</td>
+                        <td  scope="col">{{ claim.issue_description }}</td>
+                        <td  scope="col">{{ claim.date_of_claim }}</td>
+                        <td>{% if claim.status == 'APPROVED' %}
+                            <span class="badge badge-success">Approved</span>
+                            {% elif claim.status == 'PENDING' %}
+                            <span class="badge badge-primary">Pending</span>
+                            {% elif claim.status == 'REJECTED' %}
+                            <span class="badge badge-danger">Rejected</span>
+                            {% elif claim.status == 'RESOLVED' %}
+                            <span class="badge badge-secondary">RESOLVED</span>
+                            {% endif %}
+                        </td>
+                        <td scope="col">{{claim.resolution_description}}</td>
+                        <td  scope="col">{{ claim.repair_document }}</td>
+                        <td  scope="col"><a href="" class="text-danger" title="remove"><i class="fas fa-remove"></i></a></td>
+                    </tr>
+                
+        {% empty %}
+            </tbody>
+            
+        {% endfor %}
+        </table>
+    </div>
+    
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page=1" class="mx-3">&laquo; First</a>
+            <a href="?page={{ page_obj.previous_page_number }}"  class="mx-3">Previous</a>
+        {% endif %}
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="mx-3">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="mx-3">Last &raquo;</a>
+        {% endif %}
+    </div>
+
+    {% endblock %}
+</body>
+</html>

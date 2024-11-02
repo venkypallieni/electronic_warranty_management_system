@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electronic Warranty Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            line-height: 1.6;
+        }
+       
+        /* Hero Section */
+        .hero {
+            background: url('https://source.unsplash.com/1600x900/?electronics') no-repeat center center/cover;
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+            position: relative;
+        }
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.6);
+            z-index: 1;
+        }
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 600px;
+            margin: auto;
+        }
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+        .hero .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            margin: 5px;
+            background-color: #ff6347;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        /* Features Section */
+        .features {
+            display: flex;
+            justify-content: space-around;
+            padding: 40px 20px;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+        .feature-card {
+            max-width: 200px;
+        }
+        .feature-card i {
+            font-size: 48px;
+            color: #ff6347;
+            margin-bottom: 10px;
+        }
+        /* Testimonials Section */
+        .testimonials {
+            background-color: #e9ecef;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .testimonial {
+            max-width: 300px;
+            margin: auto;
+            font-style: italic;
+            margin-bottom: 20px;
+        }
+        /* Footer */
+        .footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        .footer ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+        }
+        .footer ul li {
+            margin: 0 10px;
+        }
+        .footer ul li a {
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    {% include 'common/navbar.html' %}
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Manage Your Warranties Easily and Efficiently</h1>
+            <p>Track, manage, and extend warranties for all your electronic devices in one place.</p>
+            <a href="/customer/register" class="btn">Get Started</a>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="about">
+        <div class="feature-card">
+            <i class="fas fa-file-invoice"></i>
+            <h3>Warranty Tracking</h3>
+            <p>Easily track all your device warranties.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-bell"></i>
+            <h3>Warranty Reminders</h3>
+            <p>Receive notifications before warranties expire.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-file-signature"></i>
+            <h3>Easy Claim Submission</h3>
+            <p>Submit claims directly through the system.</p>
+        </div>
+        <div class="feature-card">
+            <i class="fas fa-calendar-alt"></i>
+            <h3>Extended Warranty</h3>
+            <p>Access options to extend warranties on your devices.</p>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+  <!--   <section class="testimonials">
+        <h2>What Our Users Say</h2>
+        <div class="testimonial">
+            <p>"E-Warranty makes it so easy to keep track of all my devices. I never miss a warranty renewal now!"</p>
+            <p>- Alex T.</p>
+        </div>
+        <div class="testimonial">
+            <p>"The reminders and claims submission feature is a lifesaver!"</p>
+            <p>- Jessica M.</p>
+        </div>
+    </section> -->
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2024 E-Warranty. All Rights Reserved.</p>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact Us</a></li>
+            <li><a href="#faq">FAQ</a></li>
+        </ul>
+    </footer>
+
+</body>
+</html>

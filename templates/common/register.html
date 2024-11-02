@@ -1,0 +1,118 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Registration</title>
+    <style>
+        .body-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+        .register-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+        .register-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .register-container input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .register-container button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background-color: #ff6347;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .register-container button:hover {
+            background-color: #e55337;
+        }
+        .register-container .login-link {
+            display: block;
+            margin-top: 10px;
+            color: #777;
+            font-size: 14px;
+        }
+        .register-container .login-link a {
+            color: #ff6347;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    {%  include 'common/navbar.html' %}
+<div class="body-container">
+<div class="register-container">
+    <h2>Customer Registration</h2>
+    {%  include 'common/alert.html' %}
+    <form method="POST" enctype="multipart/form-data" action="{% url 'register' %}">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="form-group col cols-md-5 mx-1">
+                {% render_field user_form.username class="input" placeholder="Username" %}
+            </div>
+            <div class="form-group col cols-md-5 mx-1">
+                {% render_field user_form.email class="input" placeholder="Email" %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col cols-md-5 mx-1">
+                {% render_field user_form.first_name class="input" placeholder="First Name" %}
+            </div>
+            <div class="form-group col cols-md-5 mx-1">
+                {% render_field user_form.last_name class="input" placeholder="Last Name" %}
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col cols-md-5 mx-1">
+                {% render_field user_form.password1 class="input" placeholder="Password" %}
+            </div>
+            <div class="form-group col cols-md-5 mx-1">
+                {% render_field user_form.password2 class="input" placeholder="Confirm Password" %}
+            </div>
+        </div>
+        <!-- Address Field -->
+        {% render_field customer_form.address class="input" placeholder="Address" %}
+
+        <!-- Phone Field -->
+        {% render_field customer_form.phone class="input" placeholder="Phone Number" %}
+
+        <!-- Profile Photo Field -->
+        <label for="profile_photo" style="text-align: left; display: block; margin-top: 10px;">Upload Profile Photo</label>
+        {% render_field customer_form.profile_photo class="input" %}
+
+        <!-- Submit Button -->
+        <button type="submit">Register</button>
+        
+        <!-- Login Link -->
+        <p class="login-link">Already have an account? <a href="{% url 'login' %}">Login</a></p>
+    </form>
+</div>
+</div>
+</body>
+</html>

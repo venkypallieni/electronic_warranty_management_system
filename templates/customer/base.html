@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Dashboard{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: url("{% static 'images/background.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+            color: #333;
+        }
+       
+        .dashboard-container {
+            display: flex;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .sidebar h3 {
+            text-align: center;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            margin: 10px 0;
+            color: #ff6347;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .sidebar a:hover {
+            background-color: #ff7f7f;
+        }
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            margin-left: 20px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        .main-content h2 {
+            text-align: center;
+        }
+        .cards {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px 0;
+        }
+        .card {
+            flex: 1;
+            margin: 0 10px;
+            padding: 20px;
+            background-color: #ff6347;
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .recent-warranties {
+            margin-top: 20px;
+        }
+        .recent-warranties table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .recent-warranties th, .recent-warranties td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+        .recent-warranties th {
+            background-color: #ff6347;
+            color: white;
+        }
+        .quick-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        .quick-action {
+            flex: 1;
+            margin: 0 10px;
+            padding: 20px;
+            background-color: #ff6347;
+            color: white;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .quick-action:hover {
+            background-color: #e55337;
+        }
+    </style>
+</head>
+<body>
+
+    {% include 'customer/navbar.html' %}
+
+<div class="dashboard-container">
+    <div class="sidebar">
+        <h3>Menu</h3>
+        <a href="{% url 'customer_dashboard' %}">Dashboard</a>
+        <a href="{% url 'add_product' %}">Products</a>
+        <a href="{% url 'submit_warranty' %}">Warranties</a>
+        <a href="{% url 'claim_warranty' %}">Claims</a>
+        <a href="{% url 'extend_warranty' %}">Extended Warranties</a>
+    </div>
+    <div class="main-content">
+        {% include 'common/alert.html' %}
+        {% block content %}
+
+        {% endblock %}
+    </div>
+    
+</div>
+
+</body>
+</html>

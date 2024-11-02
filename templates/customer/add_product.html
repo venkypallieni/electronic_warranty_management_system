@@ -1,0 +1,191 @@
+{%  extends 'customer/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}Products{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+}
+
+.products-container {
+    max-width: 800px;
+    margin: 5% auto;
+    padding: 20px;
+    background-color: #FFF;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+h2, h3 {
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.products-list {
+    margin-bottom: 20px;
+}
+
+.product-card {
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #FFF;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.pagination a {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.pagination span {
+    margin: 0 5px;
+    color: var(--secondary-color);
+}
+
+.add-product-form {
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: var(--button-primary-color);
+    color: #FFF;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: darken(var(--button-primary-color), 10%);
+}
+
+
+
+
+    </style>
+</head>
+<body>
+    {% block content %}
+    
+    <div class="products-container">
+        <!-- Form to Add New Product -->
+        <div class="add-product-form">
+            <h3>Add New Product</h3>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="product_name">Product Name</label>
+                    {% render_field form.product_name class="form-control" placeholder="Enter product name" %}
+                </div>
+
+                <div class="form-group">
+                    <label for="serial_number">Serial Number</label>
+                    {% render_field form.serial_number class="form-control" placeholder="Enter serial number" %}
+                </div>
+
+                <div class="form-group">
+                    <label for="purchase_date">Purchase Date</label>
+                    {% render_field form.purchase_date class="form-control" %}
+                </div>
+
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    {% render_field form.category class="form-control" placeholder="Product category" %}
+                </div>
+                
+                <!-- Documents -->
+                <div class="form-group">
+                    <label for="documents">Purchase Document</label>
+                    {% render_field form.purchase_document class="form-control" placeholder="upload purchase documents" %}
+                    {% if form.purchase_document.errors %}
+                    <div class="error">{{ form.purchase_document.errors }}</div>
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    <label for="description">Description</label>
+                    {% render_field form.description class="form-control" rows="4" placeholder="Product description (optional)" %}
+                </div>
+
+                <button type="submit" class="btn btn-danger ">Add Product</button>
+            </form>
+        </div>
+    </div>
+    <h2>My Products</h2>
+        
+    <!-- Existing Products with Pagination -->
+    <div class="products-list">
+        <table class="table table-hover">
+            <tr scope="">
+                <th scope="col">Name</th>
+                <th scope="col">Serial Number</th>
+                <th scope="col">Purchase Date</th>
+                <th scope="col">Category</th>
+                <th scope="col">Description</th>
+                <th scope="col">Action</th>
+            </tr>
+            <tbody>
+        {% for product in page_obj %}
+                    <tr scope="row">
+                        <td  scope="col">{{ product.product_name }}</td>
+                        <td  scope="col">{{ product.serial_number }}</td>
+                        <td  scope="col">{{ product.purchase_date }}</td>
+                        <td  scope="col">{{ product.category }}</td>
+                        <td  scope="col">{{ product.description }}</td>
+                        <td  scope="col"><a href="" class="text-danger" title="remove"><i class="fas fa-remove"></i></a></td>
+                    </tr>
+                
+        {% empty %}
+            </tbody>
+            <p>No products added yet.</p>
+            
+        {% endfor %}
+        </table>
+    </div>
+    
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page=1" class="mx-3">&laquo; First</a>
+            <a href="?page={{ page_obj.previous_page_number }}"  class="mx-3">Previous</a>
+        {% endif %}
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="mx-3">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="mx-3">Last &raquo;</a>
+        {% endif %}
+    </div>
+
+    {% endblock %}
+</body>
+</html>

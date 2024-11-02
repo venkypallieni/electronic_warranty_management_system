@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+{%  load static %}
+{% load widget_tweaks %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Login</title>
+    <style type="text/css">
+        body {
+            line-height: 1.6;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: url("{% static 'images/e-warrenty.jpg' %}") no-repeat center center fixed;
+            background-size: cover;
+        }
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            padding: 20px;
+            margin-top: 10%;
+            margin-left: 40%;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            text-align: center;
+        }
+        .login-container h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .login-container input[type="text"],
+        .login-container input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .login-container button {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            background-color: #ff6347; /* Primary color for consistency */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .login-container button:hover {
+            background-color: #e55337; /* Slightly darker for hover effect */
+        }
+        .login-container .register-link {
+            display: block;
+            margin-top: 10px;
+            color: #777;
+            font-size: 14px;
+        }
+        .login-container .register-link a {
+            color: #ff6347; /* Primary link color */
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>  
+    {% include 'common/navbar.html' %}
+<div class="login-container">
+    <h2>User Login</h2>
+    {%  include 'common/alert.html' %}
+    <form method="POST" action="{% url 'login' %}">
+        {% csrf_token %}
+        {% render_field form.username class="input" placeholder="Username" %}
+        {% render_field form.password1 class="input" placeholder="Password" %}
+        <button type="submit">Login</button>
+        <p class="register-link">Don’t have an account? <a href="{% url 'register' %}">Register</a></p>
+    </form>
+</div>
+
+</body>
+</html>

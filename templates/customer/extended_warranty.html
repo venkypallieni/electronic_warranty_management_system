@@ -1,0 +1,176 @@
+{%  extends 'customer/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% block title %}Extend Warranty{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <style>
+
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-family: Arial, sans-serif;
+}
+
+.products-container {
+    max-width: 800px;
+    margin: 5% auto;
+    padding: 20px;
+    background-color: #FFF;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+h2, h3 {
+    color: var(--primary-color);
+    text-align: center;
+}
+
+.products-list {
+    margin-bottom: 20px;
+}
+
+.product-card {
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    padding: 15px;
+    margin-bottom: 10px;
+    background-color: #FFF;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.pagination a {
+    color: var(--primary-color);
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.pagination span {
+    margin: 0 5px;
+    color: var(--secondary-color);
+}
+
+.add-product-form {
+    border-top: 1px solid var(--border-color);
+    padding-top: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.btn-primary {
+    background-color: var(--button-primary-color);
+    color: #FFF;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-primary:hover {
+    background-color: darken(var(--button-primary-color), 10%);
+}
+
+
+
+    </style>
+</head>
+<body>
+    {% block content %}
+    
+
+    <div class="content-header">
+        <h2>Extend Warranty</h2>
+    </div>
+    
+    <div class="form-container">
+        <form method="POST" action="{% url 'extend_warranty' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+    
+            <!-- Product Selection -->
+            <div class="form-group">
+                <label for="warranty">Warranty</label>
+                {% render_field form.warranty class="form-control" %}
+            </div>
+            <!-- Warranty Period -->
+            <div class="form-group">
+                <label for="warranty_amount">Warranty Amount</label>
+                {% render_field form.warranty_amount class="form-control" %}
+            </div>
+             <!-- Warranty Period -->
+             <div class="form-group">
+                <label for="warranty_period">Warranty Period (Months)</label>
+                {% render_field form.warranty_period class="form-control" %}
+            </div>
+            <!-- Submit Button -->
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary ">Extend Warranty</button>
+            </div>
+        </form>
+    </div>
+    <h2>My Extended Warranties</h2>
+        
+    <!-- Existing Products with Pagination -->
+    <div class="products-list">
+        <table class="table table-hover">
+            <tr scope="">
+                <th scope="col">Id</th>
+                <th scope="col">Warranty</th>
+                <th scope="col">Product</th>
+                <th scope="col">Premium Paid</th>
+                <th scope="col">Warranty Amount</th>
+                <th scope="col">Amount Claimed</th>
+                <th scope="col"> Period</th>
+            </tr>
+            <tbody>
+        {% for ew in page_obj %}
+                    <tr scope="row">
+                        <td>{{ ew.id }}</td>
+                        <td>{{ ew.warranty }}</td>
+                        <td>{{ ew.warranty.product }}</td>
+                        <td>{{ ew.premium_amount }}</td>
+                        <td>{{ ew.warranty_amount }}</td>
+                        <td>{{ew.amount_claimed}}</td>
+                        <td>{{ew.warranty_period}}</td>
+                    </tr>
+        {% empty %}
+            </tbody>
+        {% endfor %}
+        </table>
+    </div>
+    
+    <!-- Pagination Controls -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page=1" class="mx-3">&laquo; First</a>
+            <a href="?page={{ page_obj.previous_page_number }}"  class="mx-3">Previous</a>
+        {% endif %}
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="mx-3">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}" class="mx-3">Last &raquo;</a>
+        {% endif %}
+    </div>
+
+    {% endblock %}
+</body>
+</html>
