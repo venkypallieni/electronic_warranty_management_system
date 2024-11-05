@@ -18,7 +18,7 @@ from wms_library.util_validate import validate_product, validate_warranty, valid
 from wms_library.exceptions.wms_exception import ProductException, WarrantyException, ClaimException
 # Create your views here.
 
-S3_LAMBDA_GATEWAY = "https://dspa0k9alc.execute-api.eu-west-1.amazonaws.com/lms-staging/docs/get-signed-url"
+S3_LAMBDA_GATEWAY = "https://rkfxfz9ix7.execute-api.ap-south-1.amazonaws.com/Staging/s3/get-token"
 def login_view(request):
     form = customer_forms.UserForm()
     data = {'form':form}
@@ -102,11 +102,10 @@ def add_product_view(request):
                 new_product = form.save(commit=False)
                 new_product.customer = customer
                 purchase_document  = request.FILES['purchase_document']
-                # token_resp = s3_helper.get_token(request, S3_LAMBDA_GATEWAY)
-                # if(token_resp['status']=='SUCCESS') :
-                #     print('upload document respone: ', s3_helper.upload(token_resp['data'], purchase_document))
-                # new_product.document_url = f"{token_resp['data']['url']}{token_resp['data']['fields']['key']}"
-                new_product.document_url =""
+                token_resp = s3_helper.get_token(request, S3_LAMBDA_GATEWAY)
+                if(token_resp['status']=='SUCCESS') :
+                    print('upload document respone: ', s3_helper.upload(token_resp['data'], purchase_document))
+                new_product.document_url = f"{token_resp['data']['url']}{token_resp['data']['fields']['key']}"
                 validate_product(new_product)
                 new_product.save()
                 messages.success(request, "Product added successfully.")

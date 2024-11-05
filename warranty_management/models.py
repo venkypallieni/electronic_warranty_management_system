@@ -52,7 +52,12 @@ class Claim(models.Model):
         ('REJECTED', 'Rejected'),
         ('RESOLVED', 'Resolved'),
     ]
-
+    ISSUE_SEVERITY = [
+        ('CRITICAL','Critical'),
+        ('HIGH', 'High'),
+        ('MODERATE','Moderate'),
+        ('LOW','Low'),
+    ]
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='claims')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     issue_description = models.TextField()
@@ -61,6 +66,7 @@ class Claim(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='PENDING')
     repair_document = models.FileField(upload_to='documents/cliams/', blank=True, null=True)  # Add document upload field
     document_url=models.CharField(max_length=1024, blank=True, null=True)
+    issue_severity = models.CharField(max_length=10, choices=ISSUE_SEVERITY, default='MODERATE')
     resolution_description = models.TextField(blank=True, null=True)
 
     def __str__(self):

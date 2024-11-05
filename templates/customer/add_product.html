@@ -113,6 +113,10 @@ h2, h3 {
                     <label for="serial_number">Serial Number</label>
                     {% render_field form.serial_number class="form-control" placeholder="Enter serial number" %}
                 </div>
+                <div class="form-group">
+                    <label for="purchase_amount">Purchase Amount</label>
+                    {% render_field form.purchase_amount class="form-control" placeholder="Enter purchase amount" %}
+                </div>
 
                 <div class="form-group">
                     <label for="purchase_date">Purchase Date</label>
@@ -152,6 +156,7 @@ h2, h3 {
                 <th scope="col">Purchase Date</th>
                 <th scope="col">Category</th>
                 <th scope="col">Description</th>
+                <th scope="col">Document</th>
                 <th scope="col">Action</th>
             </tr>
             <tbody>
@@ -162,6 +167,7 @@ h2, h3 {
                         <td  scope="col">{{ product.purchase_date }}</td>
                         <td  scope="col">{{ product.category }}</td>
                         <td  scope="col">{{ product.description }}</td>
+                        <td scope="col"><img src='{{ product.document_url }}' />{{ product.document_url }}</td>
                         <td  scope="col"><a href="" class="text-danger" title="remove"><i class="fas fa-remove"></i></a></td>
                     </tr>
                 

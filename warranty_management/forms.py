@@ -50,9 +50,10 @@ class WarrantyForm(forms.ModelForm):
 class ClaimForm(forms.ModelForm):
     class Meta:
         model = Claim
-        fields = ['product', 'claim_amount','issue_description', 'repair_document']
+        fields = ['product', 'claim_amount','issue_severity','issue_description', 'repair_document']
         widgets = {
             'product': forms.Select(attrs={'class': 'form-control'}),
+            'issue_severity': forms.Select(attrs={'class':'form-control'}),
             'issue_description': forms.Textarea(attrs={
                 'class': 'form-control', 
                 'rows': 4, 
