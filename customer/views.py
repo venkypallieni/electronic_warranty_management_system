@@ -119,7 +119,7 @@ def add_product_view(request):
     except BaseException as e:
         print("addProduct exception: ",e)
         messages.error(request, str(e))
-    form= WMS_FORMS.ProductForm(customer=customer)
+    form= WMS_FORMS.ProductForm()
     data['form'] = form
     return render(request, 'customer/add_product.html', context=data)
 
