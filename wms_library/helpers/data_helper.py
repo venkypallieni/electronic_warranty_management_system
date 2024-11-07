@@ -12,22 +12,20 @@ def get_metrics(WMS_MODELS, customer):
 
 def get_recent_claims(WMS_MODELS, customer):
     claims = WMS_MODELS.Claim.objects.filter(customer = customer)
-       
     return claims
 def get_warranties_by_status(WMS_MODELS, customer, status):
-    warranties = WMS_MODELS.Warranty.objects.filter(customer=customer)
-    status_warranties=[]
-    for w  in warranties:
-        if w.status==status:
-            status_warranties.append(w)
-    return status_warranties
+    return WMS_MODELS.Warranty.objects.filter(customer=customer,status=status)
 
 def get_warranty_products(WMS_MODELS, product):
     return WMS_MODELS.Warranty.objects.filter(product = product)
     
 def get_warranty_products_by_status(WMS_MODELS, product, status):
     warranties = []
-    for warranty in get_warranty_products(WMS_MODELS, product):
+    prod_warranties = get_warranty_products(WMS_MODELS, product)
+    print('prod_warranties: ', prod_warranties)
+    for warranty in prod_warranties:
+        print('warranty status: ', warranty.status)
         if warranty.status == status:
             warranties.append(warranty)
+    print('warranties: ', warranties)
     return warranties

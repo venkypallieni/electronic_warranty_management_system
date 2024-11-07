@@ -14,9 +14,10 @@ from .import forms as customer_forms
 from datetime import datetime
 from wms_library.helpers import s3_helper
 from wms_library.helpers import data_helper
-from wms_library.util_validate import validate_product, validate_warranty, validate_product_warranty, claim_warranty
+from wms_library.calculators import wms_calculator
+from wms_library.util_validate import validate_product, validate_warranty, validate_product_warranty, validate_extended_warranty,validate_claim_warranty
 from wms_library.exceptions.wms_exception import ProductException, WarrantyException, ClaimException
-# Create your views here.
+import  wms_library.date_util as date_util
 
 S3_LAMBDA_GATEWAY = "https://rkfxfz9ix7.execute-api.ap-south-1.amazonaws.com/Staging/s3/get-token"
 def login_view(request):
@@ -80,7 +81,7 @@ def dashboard_view(request):
         data['total_warranties'] = tot_warr
         data['total_claims'] = tot_claims
         data['recent_claims'] = data_helper.get_recent_claims(WMS_MODALS, customer)
-        data['active_warranties'] = data_helper.get_warranties_by_status(WMS_MODALS, customer, "PENDING")
+        data['active_warranties'] = data_helper.get_warranties_by_status(WMS_MODALS, customer, "ACTIVE")
     except Exception as e:
         print('dashboard error: ',str(e))
 
@@ -175,13 +176,15 @@ def claim_product_repair_view(request):
             if form.is_valid():
                 new_claim = form.save(commit=False)
                 new_claim.customer = customer
+                print('new cliam: ', new_claim)
                 warranties = data_helper.get_warranty_products_by_status(WMS_MODALS, new_claim.product, "ACTIVE")
-                claim_warranty(warranties)
+                prev_claims = data_helper.get_recent_claims(WMS_MODALS, customer)
+                validate_claim_warranty(warranties)
                 print('warranties: ', warranties)
                 claim_document  = request.FILES['repair_document']
                 if warranties is None or len(warranties) <= 0:
                     raise ClaimException("No active warranties exist for this product")
-                
+                new_claim.claim_amount =wms_calculator.calculate_claim_amount(new_claim.product,new_claim, prev_claims)
                 new_claim.save()
                 messages.success(request, "Claim submitted successfully.")
                 return HttpResponseRedirect('/customer/claims')
@@ -201,11 +204,42 @@ def extend_warranty(request):
     data = {}
     customer = get_customer(request)
     try:
-        pass
+        warranties = WMS_MODALS.ExtendedWarranty.objects.filter(customer = customer)
+        paginator = Paginator(warranties, 3)
+        page_number = request.GET.get('page')
+        page_obj = paginator.get_page(page_number)
+        data['page_obj'] = page_obj
+        if request.method == 'POST':
+            form = WMS_FORMS.ExtendedWarrantyForm(request.POST)
+            print('extended warranty form: ', form)
+            if form.is_valid():
+                extended_warranty = form.save(commit=False)
+                extended_warranty.customer = customer
+                validate_extended_warranty(extended_warranty)
+                purchase_amount = extended_warranty.warranty.product.purchase_amount
+                extended_months = extended_warranty.warranty_period
+                expired_warranty = extended_warranty.warranty
+                print('purchasedmounts: ', purchase_amount, extended_months)
+                premium_amount,max_claim_amount=wms_calculator.calculate_extended_warranty_costs(extended_months, purchase_amount)
+                if max_claim_amount > extended_warranty.warranty_amount:
+                    raise WarrantyException('Warranty Amount is greater than product purchase amount')
+                extended_warranty.premium_amount = premium_amount
+                expiration_date = wms_calculator.calculate_extended_warranty_end_date(expired_warranty, extended_months)
+                if date_util.is_before(expiration_date):
+                    raise WarrantyException("Warranty period cannot be lessthan today")
+                extended_warranty.save()
+                expired_warranty.expiration_date = expiration_date
+                expired_warranty.status = 'ACTIVE'
+                expired_warranty.save()
+                return HttpResponseRedirect('/customer/extended_warranties')
+            else:
+                messages.error(request, form.errors)
+    except WarrantyException as e:
+        messages.error(request, str(e))
     except Exception as e:
         print('Extend Warranty Exception: ',e)
         messages.error(request, str(e))
-    form= WMS_FORMS.ExtendedWarrantyForm()
+    form= WMS_FORMS.ExtendedWarrantyForm(customer=customer)
     data['form'] = form
     data['customer'] = customer
     return render(request, 'customer/extended_warranty.html', context=data)

@@ -78,10 +78,18 @@ class ExtendedWarrantyForm(forms.ModelForm):
     class Meta:
         model = ExtendedWarranty
         fields = ['warranty', 'warranty_amount', 'warranty_period']
+        widgets = {
+            'warranty': forms.Select(attrs={'class': 'form-control'}),
+        }
     def __init__(self,*args, **kwargs):
         customer = kwargs.pop('customer', None)
         super().__init__(*args, **kwargs)
         print('extended warranty customer: ', customer)
         if customer:
-            self.fields['warranty'].queryset = get_warranties_by_status(WMS_MODELS, customer,"EXPIRED")
-        
+            expired_warranties = get_warranties_by_status(WMS_MODELS,customer,"EXPIRED")
+            print('expired_warranties: ', expired_warranties)
+            self.fields['warranty'].queryset = expired_warranties
+            # if expired_warranties is not None and  len(expired_warranties) > 0:
+            #     self.fields['warranty'].queryset= expired_warranties
+            # else:
+            #     self.fields['warranty'].queryset = None

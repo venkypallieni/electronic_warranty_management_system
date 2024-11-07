@@ -12,7 +12,7 @@ def validate_product(product):
         error_msg = "Product Name is required"
     elif product.purchase_date is None:
         error_msg =  "Purchase Date is required"
-    elif du.is_after(product.purchase_date,date.today()):
+    elif du.is_after(product.purchase_date, date.today()):
         error_msg = "Purchase Date cannot be greater than current time"
     elif product.category is None:
         error_msg = "Category is required"
@@ -29,14 +29,17 @@ def validate_product_warranty(existing_warranties):
             if warranty.status!="EXPIRED":
                 raise WarrantyException("Warranty for this product is already exists!")
 
-def claim_warranty(existing_warranties):
+def validate_claim_warranty(existing_warranties):
     warranties = []
     if existing_warranties is not None:
         for w in existing_warranties:
-            if w.status !='ACTIVE' or du.is_after(w.expiration_date):
+            if w.status !='ACTIVE' or du.is_before(w.expiration_date, date.today()):
                 warranties.append(w)
     if len(warranties) > 0:
         raise ClaimException("No active warranties exist for this product")
+
+def validate_extended_warranty(extended_warranty):
+    pass
 
 def validate_warranty(warranty):
 
