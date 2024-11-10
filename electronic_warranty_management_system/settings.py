@@ -78,12 +78,12 @@ WSGI_APPLICATION = 'electronic_warranty_management_system.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
+""" DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
-}
+} """
 """ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -95,6 +95,16 @@ DATABASES = {
     }
 }  """
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': "ewarranty",
+        'USER': "admin",
+        'PASSWORD': 'Xr&rPYCYi7axS$9',
+        'HOST': 'x22223673-ewarranty.curvive2dban.ap-south-1.rds.amazonaws.com',
+        'PORT': 3306,
+    }
+}
 CSRF_COOKIE_SECURE=False
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators

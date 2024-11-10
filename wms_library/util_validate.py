@@ -39,7 +39,8 @@ def validate_claim_warranty(existing_warranties):
         raise ClaimException("No active warranties exist for this product")
 
 def validate_extended_warranty(extended_warranty):
-    pass
+    if extended_warranty.warranty.product.purchase_amount < extended_warranty.warranty_amount:
+        raise WarrantyException("Warranty amount is greater than purchase amount")
 
 def validate_warranty(warranty):
 

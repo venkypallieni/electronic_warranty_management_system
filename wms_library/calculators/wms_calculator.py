@@ -36,7 +36,7 @@ def calculate_extended_warranty_end_date(warranty, additional_months):
         extended_expiration_date = warranty.expiration_date + timedelta(days=30 * additional_months)
         return extended_expiration_date
     else:
-        return du.today()+timedelta(days=(additional_months*30))
+        return du.today_date()+timedelta(days=(additional_months*30))
     
 def calculate_premium_amount(product, extension_period_months):
     base_rate = 0.02  # Assume a 2% monthly rate
@@ -52,5 +52,5 @@ def calculate_extended_warranty_costs(extended_warranty_months, product_purchase
 
     # Calculate max claim amount
     max_claim_amount = product_purchase_amount * max_claim_factor
-
+    print('max_claim_amount: ',max_claim_amount, ', premium_amount: ', premium_amount)
     return premium_amount, max_claim_amount

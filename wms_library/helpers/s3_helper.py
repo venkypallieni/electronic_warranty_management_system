@@ -8,8 +8,10 @@ def upload(data, file):
     else:
         raise S3Exception("Unable to upload documents to s3")
 
-def get_token(request, api_gateway):
-    response = requests.post(api_gateway)
+def get_token(request, api_gateway, sub_folder, filename):
+    url = f"{api_gateway}?sub_folder={sub_folder}&file_name={filename}"
+    print('url: ',url)
+    response = requests.post(url)
     if response.status_code == 200:
         return response.json()
     else:

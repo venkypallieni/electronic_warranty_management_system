@@ -148,6 +148,7 @@ h2, h3 {
                 <th scope="col">Expiration Date</th>
                 <th scope="col">Status</th>
                 <th scope="col">Terms & Conditions</th>
+                <th scope="col">Document</th>
                 <th scope="col"> Action</th>
             </tr>
             <tbody>
@@ -168,6 +169,7 @@ h2, h3 {
                             {% endif %}
                         </td>
                         <td>{{ warranty.terms_and_conditions }}</td>
+                        <td><img src='{{ warranty.document_url }}' height="80px" width="80px"></td>
                         <td scope="col"> {% if warranty.status == 'PENDING' %}
                             <a href="" class="text-danger" title="withdraw"><i class="fas fa-remove"></i></a>
                             {% endif %}

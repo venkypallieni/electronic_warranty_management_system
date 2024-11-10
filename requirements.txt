@@ -11,3 +11,4 @@ pytz==2023.3
 django-core
 django-storages
 pillow
+x22223673-ewarranty-management==0.0.2

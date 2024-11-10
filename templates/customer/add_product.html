@@ -90,6 +90,13 @@ h2, h3 {
     background-color: darken(var(--button-primary-color), 10%);
 }
 
+.profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
 
 
 
@@ -156,7 +163,7 @@ h2, h3 {
                 <th scope="col">Purchase Date</th>
                 <th scope="col">Category</th>
                 <th scope="col">Description</th>
-                <th scope="col">Document</th>
+                <th scope="col">Purchase Document</th>
                 <th scope="col">Action</th>
             </tr>
             <tbody>
@@ -167,7 +174,9 @@ h2, h3 {
                         <td  scope="col">{{ product.purchase_date }}</td>
                         <td  scope="col">{{ product.category }}</td>
                         <td  scope="col">{{ product.description }}</td>
-                        <td scope="col"><img src='{{ product.document_url }}' />{{ product.document_url }}</td>
+                        <td scope="col">
+                                <img src='{{ product.document_url }}' class="profile-pic" height="80px" width="80px"/>
+                        </td>
                         <td  scope="col"><a href="" class="text-danger" title="remove"><i class="fas fa-remove"></i></a></td>
                     </tr>
                 

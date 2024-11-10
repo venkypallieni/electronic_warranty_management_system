@@ -3,26 +3,26 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="main-content">
-    <h2>Welcome, {{ user.username }}</h2>
+<div class="">
+    <h2>Welcome, <span class="text-dark">{{ user.username }}</span></h2>
 
     <div class="cards">
-        <div class="card">
-            <h3>Total Products</h3>
+        <div class="card shadow-sm">
+            <h5>Total Products</h5>
             <p>{{total_products}}</p>
         </div>
-        <div class="card">
-            <h3>Total Warranties</h3>
+        <div class="card shadow-sm">
+            <h5>Total Warranties</h5>
             <p>{{total_warranties}}</p>
         </div>
-        <div class="card">
-            <h3>Approved Claims</h3>
+        <div class="card  shadow-sm">
+            <h5>Approved Claims</h5>
             <p>{{total_claims}}</p>
         </div>
     </div>
 
     <div class="recent-warranties">
-        <h3>Recent Claims</h3>
+        <h4>Recent Claims</h4>
         <table>
             <thead>
                 <tr>
@@ -46,7 +46,7 @@
     </div>
 
     <div class="recent-warranties">
-        <h3>Active Warranties</h3>
+        <h4>Active Warranties</h4>
         <table>
             <thead>
                 <tr>

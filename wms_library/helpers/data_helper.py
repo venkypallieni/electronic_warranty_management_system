@@ -1,5 +1,3 @@
-
-
 def get_common_data(WMS_MODELS, customer):
     products = WMS_MODELS.Product.objects.filter(customer = customer)
     warranties = WMS_MODELS.Warranty.objects.filter(customer = customer)
@@ -11,8 +9,10 @@ def get_metrics(WMS_MODELS, customer):
     return products.count(), warranties.count(), claims.count()
 
 def get_recent_claims(WMS_MODELS, customer):
-    claims = WMS_MODELS.Claim.objects.filter(customer = customer)
+    claims = WMS_MODELS.Claim.objects.filter(customer = customer).order_by('date_of_claim')[:5]
     return claims
+def get_all_claims(WMS_MODELS, customer):
+    return WMS_MODELS.Claim.objects.filter(customer=customer)
 def get_warranties_by_status(WMS_MODELS, customer, status):
     return WMS_MODELS.Warranty.objects.filter(customer=customer,status=status)
 

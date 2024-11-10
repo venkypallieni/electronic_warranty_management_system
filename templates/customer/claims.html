@@ -123,7 +123,7 @@ h2, h3 {
                 </div>
                 <!-- Documents -->
                 <div class="form-group">
-                    <label for="documents">Repair Document</label>
+                    <label for="repair_document">Repair Document</label>
                     {% render_field form.repair_document class="form-control" placeholder="upload repair document" %}
                     {% if form.repair_document.errors %}
                     <div class="error">{{ form.repair_document.errors }}</div>
@@ -171,7 +171,7 @@ h2, h3 {
                         </td>
                         <td scope="col">{{claim.claim_amount}}</td>
                         <td scope="col">{{claim.resolution_description}}</td>
-                        <td  scope="col">{{ claim.repair_document }}</td>
+                        <td  scope="col"><img src='{{ claim.document_url }}' height="80px" width="80px"></td>
                         <td  scope="col"><a href="" class="text-danger" title="remove"><i class="fas fa-remove"></i></a></td>
                     </tr>
                 

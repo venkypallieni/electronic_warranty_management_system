@@ -25,3 +25,6 @@ def format_date(date_str, format):
 
 def today():
     return datetime.now()
+
+def today_date():
+    return date.today()
