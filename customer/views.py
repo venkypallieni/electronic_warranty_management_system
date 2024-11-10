@@ -18,8 +18,9 @@ from wms_library.calculators import wms_calculator
 from wms_library.util_validate import validate_product, validate_warranty, validate_product_warranty, validate_extended_warranty,validate_claim_warranty
 from wms_library.exceptions.wms_exception import ProductException, WarrantyException, ClaimException
 import wms_library.date_util as date_util
+import os
 
-S3_LAMBDA_GATEWAY = "https://rkfxfz9ix7.execute-api.ap-south-1.amazonaws.com/Staging/s3/get-token"
+S3_LAMBDA_GATEWAY = os.getenv("API_GATEWAY_URL")+"/s3/get-token"
 def login_view(request):
     form = customer_forms.UserForm()
     data = {'form':form}
